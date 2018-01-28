@@ -1,0 +1,33 @@
+import os ;
+import testing ;
+
+
+if [ os.name ] = NT
+{
+	BUILD_ARCH = win32 ;
+	TARGET_REQUIREMENTS = <define>WIN32 ;
+}
+
+
+
+project  /omd/plsuite/test
+        : requirements $(TARGET_REQUIREMENTS)
+	  <define>OMD_LITTLE_ENDIAN
+	  <include>../src
+	  <source>/omd/plsuite//cjpg
+          <source>/omd/plsuite//djpg
+        : default-build <threading>multi
+        : build-dir bin
+        ;
+
+
+{
+	test-suite test :
+
+	#[ run xml_node_test.cpp : : :  : ]
+	[ run test1.cpp : : test.bmp test.jpg :  : ]
+        [ run test2.cpp : : testodd.bmp testodd.jpg :  : ]
+        [ run test3.cpp : : testodd.bmp testodd.jpg :  : ]
+	;
+}
+

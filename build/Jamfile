@@ -1,0 +1,68 @@
+import os ;
+
+
+if [ os.name ] = NT
+{
+    BUILD_ARCH = win32 ;
+    lib version : : <name>version ;
+
+}
+else if [ os.name ] = LINUX
+{
+	BUILD_ARCH = linux86 ;
+}
+else
+{
+	BUILD_ARCH = linux86 ;
+}
+
+
+project /omd/plsuite
+             : source-location ../src
+	  : requirements $(TARGET_REQUIREMENTS)
+	  <toolset>gcc:<cxxflags>-ftemplate-depth-300
+        : usage-requirements <include>.. 
+        : default-build <threading>multi
+        : build-dir ../lib
+        ;
+
+
+
+       
+
+
+lib djpg
+	: djpg.c didct.c bitmap.c
+        : <include>..
+		  <include>../src
+          <link>static
+	:
+        ;
+
+
+lib cjpg
+	: cjpg.c cdct.c bitmap.c
+        : <include>..
+		  <include>../src
+          <link>static
+	:
+        ;
+
+
+
+exe Cjpg : cmain.c 
+/omd/plsuite//cjpg
+: <include>..
+<include>../src
+<link>static
+:
+;
+
+
+exe Djpg : dmain.c 
+/omd/plsuite//djpg
+: <include>..
+<include>../src
+<link>shared
+:
+;
